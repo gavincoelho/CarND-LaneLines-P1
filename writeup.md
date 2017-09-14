@@ -1,54 +1,62 @@
 # **Project 1 - Finding Lane Lines on the Road** 
 
-## Writeup Template
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file. But feel free to use some other method and submit a pdf if you prefer.
-
----
-
-**Finding Lane Lines on the Road**
-
-The goals / steps of this project are the following:
-* Make a pipeline that finds lane lines on the road
-* Reflect on your work in a written report
-
-
 [//]: # (Image References)
 
-[image1]: ./examples/grayscale.jpg "Grayscale"
+[image1]: ./writeup_images/1-grayscale.jpg "Step 1 - Convert to Grayscale"
+[image2]: ./writeup_images/2-blur.jpg "Step 2 - Apply a Gaussian Blur"
+[image3]: ./writeup_images/3-edges.jpg "Step 3 - Find edges"
+[image4]: ./writeup_images/4-roi.jpg "Step 4 - ROI"
+[image5]: ./writeup_images/5-hough.jpg "Step 5 - Hough"
+[image6]: ./writeup_images/6-weighted.jpg "Step 6 - Weighted"
+[image7]: ./writeup_images/7-hough.jpg "Step 5 - Hough single line"
+[image8]: ./writeup_images/8-weighted.jpg "Step 6 - Weighted single line"
+[image-before]: ./writeup_images/challenge_before.png "Challenge Video Before"
+[image-after]: ./writeup_images/challenge_after.png "Challenge Video After"
 
 ---
 
-### Reflection
+## 1. Pipeline
 
-### 1. Pipeline
+My pipeline consists of the following 6 steps:
 
-My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
+![Step 1 - The image is converted to grayscale][image1]
 
-In order to draw a single line on the left and right lanes, I modified the draw_lines() function by ...
+![Step 2 - A Gaussian blur is applied][image2]
 
-If you'd like to include images to show how the pipeline works, here is how to include an image: 
+![Step 3 - Canny edge detection is used to find the edges][image3]
 
-![alt text][image1]
+![Step 4 - A mask is applied to focus on the region of interest][image4]
 
+![Step 5 - Hough transform is applied and the lines are drawn][image5]
 
-### 2. Shortcommings
-
-My pipeline fails to perform well when there is reduced contrast between lane line and the road surface. Concrete road surfaces are lighter than tar and resulting in reduced contrast making it harder to detect the lines.
-
-Shadows on the road are incorectly pick up by the 
-
-Curved Lines
-
-No line on left or right
-
-Other vechiles on the road could obstruct the lines
-
-Construction and missing lines
+![Step 6 - The output of the previous step is overlaid over the original image][image6]
 
 
-### 3. Improvements
+### Drawing Single Solid lane Lines
 
-Some improvements were made to address some if these issues. The graddient of the lane lines is about 45deg most of the time so lines that are mnore horizontal are filtered out. This helps reduce the 
+The `draw_lines` function was replaced with an updated function `draw_lane_lines` that averages the all the lines returned from the Hough transform and draws a single line for each side of the lane.
 
-Another potential improvement could be to ...
+![Single Solid Lane Lines][image8]
+
+## 2. Shortcomings
+
+One of the main issues I had was the averaged lines occasionally changing direction (gradient) drastically between frames making them jitter in the video.
+
+Another issue experienced with the challenge video was all the noise picked up from the hood being in frame and the shadows cast on the road. 
+
+Some other things that could cause issues are:
+
+* corners or curved lines
+* other vehicles on the road could obstruct the lines or add noise to the detected lines
+* construction on the road
+* missing or faded lines
+
+## 3. Improvements
+
+To fix the issue of shadows on the road and the hood being in frame on the challenge video the `draw_lane_lines` function was updated. The gradient of the lane lines is about 45 degrees most of the time so any lines that are closer to being horizontal are filtered out. 
+
+![Challenge video with the original function][image-before]
+
+![Challenge video with the modified function][image-after]
+
+In order to reduce the jitter of the averaged lines the function could be modified to favor longer lines so if there are lots of short lines they will have less impact on the gradient of the averaged line.
