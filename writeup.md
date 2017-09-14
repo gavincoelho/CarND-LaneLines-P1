@@ -40,7 +40,7 @@ Step 6 - The output of the previous step is overlaid over the original image
 
 ### Drawing Single Solid lane Lines
 
-The `draw_lines` function was replaced with an updated function `draw_lane_lines` that averages the all the lines returned from the Hough transform and draws a single line for each side of the lane.
+The `draw_lines` function was replaced with an updated function `draw_lane_lines` that averages all the lines returned from the Hough transform and draws a single line for each side of the lane.
 
 ![Single Solid Lane Lines][image8]
 
