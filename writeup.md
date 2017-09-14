@@ -19,16 +19,22 @@
 
 My pipeline consists of the following 6 steps:
 
+Step 1 - The image is converted to grayscale
 ![Step 1 - The image is converted to grayscale][image1]
 
+Step 2 - A Gaussian blur is applied
 ![Step 2 - A Gaussian blur is applied][image2]
 
+Step 3 - Canny edge detection is used to find the edges
 ![Step 3 - Canny edge detection is used to find the edges][image3]
 
+Step 4 - A mask is applied to focus on the region of interest
 ![Step 4 - A mask is applied to focus on the region of interest][image4]
 
+Step 5 - Hough transform is applied and the lines are drawn
 ![Step 5 - Hough transform is applied and the lines are drawn][image5]
 
+Step 6 - The output of the previous step is overlaid over the original image
 ![Step 6 - The output of the previous step is overlaid over the original image][image6]
 
 
@@ -55,8 +61,10 @@ Some other things that could cause issues are:
 
 To fix the issue of shadows on the road and the hood being in frame on the challenge video the `draw_lane_lines` function was updated. The gradient of the lane lines is about 45 degrees most of the time so any lines that are closer to being horizontal are filtered out. 
 
+Challenge video with the original function
 ![Challenge video with the original function][image-before]
 
+Challenge video with the modified function
 ![Challenge video with the modified function][image-after]
 
 In order to reduce the jitter of the averaged lines the function could be modified to favor longer lines so if there are lots of short lines they will have less impact on the gradient of the averaged line.
